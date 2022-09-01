@@ -1,0 +1,16 @@
+<ng-container>
+    <section class="forgot-pin-container">
+        <h1 class="top-heading">Change Pin</h1>
+        <span class="form-heading">Enter your User Name</span>
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)" class="form-group-container">
+            <div class="form-control-container">
+                <div class="input-fields-container">
+                    <input type="text" class="form-control center-text" formControlName="username"
+                        placeholder="User Name" />
+                </div>
+                <button type="submit" class="submit-button"
+                    [disabled]="!formGroup.valid">Submit</button>
+            </div>
+        </form>
+    </section>
+</ng-container>

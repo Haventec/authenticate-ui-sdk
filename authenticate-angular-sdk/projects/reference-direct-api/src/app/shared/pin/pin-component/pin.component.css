@@ -1,0 +1,68 @@
+#hidden-input {
+  font-size: 20px; /* 16+ disables auto zoom */
+  opacity: 0;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  cursor: default;
+  color: white;
+}
+
+.button-container {
+  outline: 0;
+  border: solid 1px #0a464f;
+  border-radius: 10%;
+  cursor: default;
+  position: relative;
+  background: white;
+  width: 3rem;
+  height: 3rem;
+  -webkit-transition: background 0.3s ease-in-out;
+  transition: background 0.3s ease-in-out;
+  float: right;
+}
+
+.button-container::after {
+    display: flex;
+    justify-content: center;
+    padding-top: 3px;
+    content: '*';
+    color: #0a464f;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.button-secondary {
+  outline: 0;
+  border: solid 1px #0a464f;
+  border-radius: 10%;
+  cursor: default;
+  position: relative;
+  background: none;
+  width: 3rem;
+  height: 3rem;
+  color: #0a464f;
+  text-transform: uppercase;
+  -webkit-transition: background 0.3s ease-in-out;
+  transition: background 0.3s ease-in-out;
+  float: right;
+}
+
+.error-shake {
+  animation: shake 0.3s linear none;
+  transform: translate3d(0, 0, 0);
+}
+
+.pin {
+  display: inline-block;
+}
+
+@keyframes shake {
+  10%, 50%, 90% {
+    transform: translate3d(-12px, 0, 0);
+  }
+
+  20%, 70% {
+    transform: translate3d(10px, 0, 0);
+  }
+}

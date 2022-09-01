@@ -1,0 +1,17 @@
+<ng-container>
+    <section class="activate-user-container">
+        <h1 class="top-heading">Activate User</h1>
+        <span class="form-heading">Submit your Activation Code</span>
+        <form [formGroup]="formGroup" (ngSubmit)="onActivate(formGroup.value)" class="form-group-container">
+            <div class="form-control-container">
+                <div class="input-fields-container">
+                    <input type="text" class="form-control center-text" formControlName="activationToken"
+                        placeholder="Activation Code" />
+                </div>
+                <app-confirm-pin formControlName="pin"></app-confirm-pin>
+                <button type="submit" class="submit-button"
+                    [disabled]="!formGroup.valid">Activate User</button>
+            </div>
+        </form>
+    </section>
+</ng-container>

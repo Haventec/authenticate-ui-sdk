@@ -1,0 +1,18 @@
+<ng-container>
+    <section class="add-user-container">
+        <h1 class="top-heading">Add User</h1>
+        <span class="form-heading">Please enter your details</span>
+        <form [formGroup]="formGroup" (ngSubmit)="onSignUp(formGroup.value)" class="form-group-container">
+            <div class="form-control-container">
+                <div class="input-fields-container">
+                    <input type="text" inputmode="username" class="form-control" formControlName="username"
+                        placeholder="User Name" />
+                    <input type="email" inputmode="email" class="form-control" formControlName="email"
+                        placeholder="Email" />
+                </div>
+                <button type="submit" class="submit-button"
+                    [disabled]="!formGroup.valid">Add User</button>
+            </div>
+        </form>
+    </section>
+</ng-container>

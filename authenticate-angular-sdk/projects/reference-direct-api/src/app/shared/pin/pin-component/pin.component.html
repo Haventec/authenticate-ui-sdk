@@ -1,0 +1,14 @@
+<div (click)="onFocusPin()">
+  <div [class.error-shake]="errorShake" class="d-flex justify-content-between">
+        <div *ngFor="let index of pinIndexes;">
+          <span class="pin" tabindex="-1" [ngClass]="(index >= currentPin.length) ? 'button-secondary' : 'button-container'"></span>
+        </div>
+  </div>
+  <form [formGroup]="pinFormGroup">
+    <div style="position:absolute; top:0;">
+      <input #pin id="hidden-input" type="text" inputmode="tel" tabindex="-1" autocomplete="off"
+        formControlName="pinField" class="no-number-spinner" appLimitInputNumberLength [maxDigits]="digitSpan"
+        [inputControl]="pinFieldControl" />
+    </div>
+  </form>
+</div>

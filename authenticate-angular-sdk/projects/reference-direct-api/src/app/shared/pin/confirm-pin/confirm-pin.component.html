@@ -1,0 +1,10 @@
+<div class="confirm-pin">
+    <span class="form-heading">Enter your 4 digit PIN</span>
+    <div class="pin-container">
+        <app-pin #pinSet (onPinSet)='onPinEntered($event)'></app-pin>
+    </div>
+    <span class="form-heading">Confirm your 4 digit PIN</span>
+    <div class="pin-container">
+        <app-pin #pinConfirm (onPinSet)='onPinConfirmed($event)'></app-pin>
+    </div>
+</div>
