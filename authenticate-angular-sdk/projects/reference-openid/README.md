@@ -1,6 +1,6 @@
-### Reference application for Direct Api option ###
+### Reference application for OpenId option ###
 
-* The application is provided to demonstrate a basic implementation of the Haventec authenticaion workflow using the Direct API option.
+* The application is provided to demonstrate a basic implementation of the Haventec authenticaion workflow using the OpenId option.
 * Ensure that you have provisioned an Authenticate application using Haventec's Console Tools.
 * Since this application assumes adoption of the OpenId option, please ensure that you select Open ID with Haventec IAM when prompted.
 * To view information about how to do this, visit: https://haventec.zendesk.com/hc/en-us/articles/5282439566863-Project-Open-ID-with-Haventec-IAM
