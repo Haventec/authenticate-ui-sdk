@@ -1,0 +1,46 @@
+
+body {
+  font-size: 22px !important;
+}
+
+/* You can add global styles to this file, and also import other style files */
+// importing fonts
+
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/Inter/Inter-Bold.woff") format('woff');
+  font-weight: bold;
+  font-style: bold;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/Inter/Inter-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Athletics';
+  src: url('../fonts/Athletics/Athletics-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Athletics';
+  src: url('../fonts/Athletics/Athletics-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: bold;
+}
+@font-face {
+  font-family: 'Helventica Now';
+  src: url('../fonts/Helvetica/HelveticaNowTextReg.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helventica Now';
+  src: url('../fonts/Helvetica/HelveticaNowTextBd.woff') format('woff');
+  font-weight: bold;
+  font-style: bold;
+}

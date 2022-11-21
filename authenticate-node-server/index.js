@@ -8,6 +8,7 @@ const config = require('./config');
 const globalHeaders = {
     'Content-Type': 'application/json',
     'x-api-key': config.application.apiKey,
+    'x-application-uuid': config.application.applicationUuid,
     'User-Agent': 'node-superagent'
 };
 
@@ -23,12 +24,16 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+let sessionStore = {
+
+}
+
 const init = async () => {
 
     const server = Hapi.server({
         port: config.server.port,
-        host: config.server.host
-    }, { cors: true });
+        host: config.server.host,
+    });
 
     server.route({
         method: 'GET',
@@ -59,7 +64,7 @@ const init = async () => {
                     result.activationToken = '';
                 }
                 return result;
-            }, response)
+            })
         }
     })
 
@@ -79,7 +84,7 @@ const init = async () => {
             console.info('\nCalled POST /activate/user');
             return connectServer(path, method, payload, params, function (result) {
                 return result;
-            }, response);
+            });
         }
     });
 
@@ -100,7 +105,7 @@ const init = async () => {
             console.info('\nCalled POST /login');
             return connectServer(path, method, payload, params, function (result) {
                 return result;
-            }, response);
+            });
         }
     });
 
@@ -124,7 +129,7 @@ const init = async () => {
                     result.activationToken = '';
                 }
                 return result;
-            }, response);
+            });
         }
     });
 
@@ -145,7 +150,7 @@ const init = async () => {
             console.info('\nCalled POST /reset-pin');
             return connectServer(path, method, payload, params, function (result) {
                 return result;
-            }, response);
+            });
         }
     });
 
@@ -170,7 +175,7 @@ const init = async () => {
                 }
 
                 return result;
-            }, response);
+            });
         }
     });
 
@@ -191,7 +196,134 @@ const init = async () => {
             console.info('\nCalled POST /activate/device');
             return connectServer(path, method, payload, params, function (result) {
                 return result;
-            }, response);
+            });
+        }
+    });
+
+    // 
+    server.route({
+        method: 'POST',
+        options: {
+            cors: true
+        },
+        path: '/smfa/register',
+        handler: async function (request, response) {
+            const payload = {
+                user: { username: request.payload.username }
+            };
+
+            const path_device = '/authenticate/v1-2/mfa/device';
+            const path_user = '/authenticate/v1-2/mfa/user';
+            const params = {};
+
+            console.info('\nCalled POST /register sfma user');
+            return connectServer(path_device, 'POST', payload, params, function (result) {
+                return result
+            })
+            .then((response) => {
+                switch(response?.responseStatus?.code) {
+                    case 'AN-AUTH-1017':
+                        console.info('\nCalled PUT /register sfma device');
+                        return connectServer(path_user, 'PUT', payload, params, function (result) {
+                            storeSession(result);
+                            sendMagicLinkEmail(request.payload.username, result.activationDetails.link);
+                            return result;
+                        }, response);
+                        break;
+                    default:
+                        console.info('\nUnexpected error ', response);
+                }
+            });
+        }
+    });
+
+    // 
+    server.route({
+        method: 'POST',
+        options: {
+            cors: true
+        },
+        path: '/smfa/login',
+        handler: async function (request, response) {
+            const payload = {
+                username: request.payload.username,
+                deviceUuid: request.payload.deviceUuid,
+                authKey: request.payload.authKey,
+                applicationUuid: config.application.applicationUuid,
+                pinlessDevice: true
+            };
+
+            const path = '/authenticate/v1-2/authentication/login';
+            const method = 'POST';
+            const params = {};
+
+            console.info('\nCalled POST /login smfa');
+            return connectServer(path, method, payload, params, function (result) {
+                return result;
+            });
+        }
+    });
+    // 
+    server.route({
+        method: 'POST',
+        options: {
+            cors: true
+        },
+        path: '/smfa/check',
+        handler: async function (request, response) {
+
+            const payload = {
+                authSessionDetails: {
+                    id: request.payload.sessionId
+                }
+            }
+
+            const path = '/authenticate/v1-2/mfa/user/device/activate';
+            const method = 'PATCH';
+            const params = {};
+
+            console.info('\nCalled PATCH /check smfa');
+            return connectServer(path, method, payload, params, function (result) {
+            })
+            .then(result => {
+                if(result.responseStatus?.code === 'AN-SMFA-0009') {
+                    return response;
+                } else {
+                    return result;
+                }
+            })
+        }
+    });
+
+    // 
+    server.route({
+        method: 'GET',
+        options: {
+            cors: true
+        },
+        path: '/smfa/magic-link',
+        handler: async function (request, response) {
+
+            const payload = {
+                activationDetails: {
+                    link: request.query.activationToken
+                },
+                authSessionDetails: {
+                    id: sessionStore.authSessionDetails.id
+                }
+            }
+
+            const path = '/authenticate/v1-2/mfa/verify';
+            const method = 'PATCH';
+            const params = {
+                nonce: request.query.nonce,
+                htOidTxid: request.query.htOidTxid
+            };
+
+            console.info('\nCalled PATCH /mfa/verify');
+            return connectServer(path, method, payload, params, function (result) {
+                return result;
+            });
         }
     });
 
@@ -216,8 +348,8 @@ const init = async () => {
     }
 });
 
-    await server.start();
-    console.log('Server running on %s', server.info.uri);
+await server.start();
+console.log('Server running on %s', server.info.uri);
 };
 
 process.on('unhandledRejection', (err) => {
@@ -227,6 +359,7 @@ process.on('unhandledRejection', (err) => {
 });
 
 async function connectServer(path, method, payload, params, callback) {
+    console.log('connectServer path ', path);
     if(params){
         path += '?' + Object.keys(params).map(key => key + '=' + params[key]).join('&');
     }
@@ -242,11 +375,12 @@ async function connectServer(path, method, payload, params, callback) {
         .catch(err => {
             if (err.response) { // authenticate error responses
                 const errResponse = JSON.parse(err.response.text);
+                console.log('AUTHENTICATE ERROR RESPONSE ');
                 console.log("CODE:", errResponse.responseStatus.code);
                 console.log("ERROR:", errResponse.responseStatus.message);
                 return errResponse;
             } else { // other errors
-                console.log("ERROR:", err.message);
+                console.log("OTHER ERRORS:");
                 return ({responseStatus: {status: "ERROR", message: err.message, code: ""}});
             }
         })
@@ -260,14 +394,29 @@ async function sendEmail(emailReceiver, emailSubject, emailBody) {
         return console.info('Mail server is not configured');
     } else {
         // send mail with defined transport object
-        await transporter.sendMail({
-            from: config.mail.fromAddress, // sender address
+        let to = {
+            from: config.mail.fromAddress,
             to: emailReceiver, // list of receivers
-            subject: emailSubject, // Subject line
+            subject: emailSubject,
             text: emailBody, // plain text body
-        });
+        }
+        await transporter.sendMail(to);
     }
 
+}
+
+const storeSession = (toStore) => {
+    sessionStore = {
+        ...sessionStore,
+        ...toStore
+    }
+}
+
+const sendMagicLinkEmail = (email, activationToken) => {
+    var template = `Please visit http://${config.server.host}:${config.server.port}/smfa/magic-link?activationToken=%s to activate your account`;
+    var body =  template.replace("%s", activationToken);
+
+    sendEmail(email, "Please confirm device activation", body);
 }
 
 init();

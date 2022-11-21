@@ -1,7 +1,10 @@
 # Haventec Authenticate sample server
 
-This is a sample node server to demonstrate how to communicate with the Haventec Authenticate server.
-This server is **NOT** intended to be used in a Production environment.
+This server is implemented in NodeJs, and is provided purley as a convenience for users wishing to evaluate the front-end reference application in a Javascript / NodeJs environment.
+
+Further, this implementation demonstrates the fundamentals of the services required to successfully orchestrate basic API calls to the Haventec Authenticate server in a variety of use case scenarios.
+
+This server is **NOT** intended to be used in a Production environment. It has not been implemented with security in mind.
 
 ### Prerequisites
 

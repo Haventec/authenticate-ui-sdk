@@ -30,6 +30,9 @@ config.application.apiKey = '';
 // Change this value if you are using your own Haventec Authenticate server
 config.application.haventecServer = 'https://api-demo.haventec.com';
 
+// mfa-client does not accept applicationUuid from front-end
+// your silent mfa application will need to find this value
+config.application.applicationUuid = '';
 
 /************************************************************
  *
@@ -60,7 +63,7 @@ config.server.port = (process.env.PORT || 8081);
 config.mail.host = '';
 
 // Value - number - example: 456
-config.mail.port = 0;
+config.mail.port = 587;
 
 // Value - boolean - example: true for 465, false for other ports
 config.mail.secure = false;

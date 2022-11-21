@@ -55,6 +55,7 @@
 
 .pin {
   display: inline-block;
+  border-color: #ced4da;
 }
 
 @keyframes shake {

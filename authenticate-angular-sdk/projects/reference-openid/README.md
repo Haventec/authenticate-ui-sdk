@@ -10,7 +10,7 @@
 * The app requires values for for the following properties, which will form part of many calls to the Haventec Authenticate APIs:
 
     1. applicationUuid: string - You may assign this value to APPLICATION_UUID within the application.constants.ts file of this project for global reference.
-    2. apiKey: string - If you are using the authenticate-node-server, set this value witin the config.js file of that directory. Otherwise, ensure your code specifies this as required by the API signatures. 
+    2. apiKey: string - If you are using the authenticate-node-server, set this value within the config.js file of that directory. Otherwise, ensure your code specifies this as required by the API signatures. 
 
 ### Haventec Authenticate API SaaS ###
 

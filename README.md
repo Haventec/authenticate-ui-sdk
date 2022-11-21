@@ -8,7 +8,6 @@ https://angular.io/guide/file-structure#multiple-projects
 ### Install Node.js ###
 
 * The official Node.js website has installation instructions for Node.js: https://nodejs.org
-* See README.md instructions within the individual project folders.
 * See README.md instructions within the individual project folders of this workspace.
 
 ### Haventec Authenticate API SaaS ###

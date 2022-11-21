@@ -204,6 +204,107 @@
           }
         }
       }
+    },
+    "reference-silentmfa": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/reference-silentmfa",
+      "sourceRoot": "projects/reference-silentmfa/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/reference-silentmfa",
+            "index": "projects/reference-silentmfa/src/index.html",
+            "main": "projects/reference-silentmfa/src/main.ts",
+            "polyfills": "projects/reference-silentmfa/src/polyfills.ts",
+            "tsConfig": "projects/reference-silentmfa/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/reference-silentmfa/src/favicon.ico",
+              "projects/reference-silentmfa/src/assets"
+            ],
+            "styles": [
+              "projects/reference-silentmfa/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/reference-silentmfa/src/environments/environment.ts",
+                  "with": "projects/reference-silentmfa/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "reference-silentmfa:build:production"
+            },
+            "development": {
+              "browserTarget": "reference-silentmfa:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "reference-silentmfa:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/reference-silentmfa/src/test.ts",
+            "polyfills": "projects/reference-silentmfa/src/polyfills.ts",
+            "tsConfig": "projects/reference-silentmfa/tsconfig.spec.json",
+            "karmaConfig": "projects/reference-silentmfa/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/reference-silentmfa/src/favicon.ico",
+              "projects/reference-silentmfa/src/assets"
+            ],
+            "styles": [
+              "projects/reference-silentmfa/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
     }
   }
 }
